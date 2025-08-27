@@ -23,34 +23,30 @@ pipeline {
 
     stage('Build Angular') {
       steps {
-        dir("${FRONT_DIR}") {
-          // debug เล็กน้อยให้ชัวร์ว่าเห็น package.json
-          sh '''
-            echo "PWD on host = $(pwd)"
-            test -f package.json || { echo "❌ not found package.json"; ls -la; exit 1; }
-          '''
-          // build ด้วย Node 22 ใน container
-          sh '''
-            docker run --rm -v "$PWD":/app -w /app node:22 bash -lc '
+        // พาธงานของคุณคือ /var/jenkins_home/workspace/<job-name>/todolist-frontend
+        sh '''
+          docker run --rm \
+            -v jenkins_home:/var/jenkins_home \
+            -w /var/jenkins_home/workspace/todolist-ci-cd/todolist-frontend \
+            node:22 bash -lc "
               npm install --legacy-peer-deps &&
               node --max_old_space_size=4096 ./node_modules/@angular/cli/bin/ng build --configuration production
-            '
-          '''
-        }
+            "
+        '''
       }
       post {
         success {
-          archiveArtifacts artifacts: "${FRONT_DIR}/${DIST_PATH}/**", allowEmptyArchive: false
+          archiveArtifacts artifacts: "todolist-frontend/dist/todo-list-webapp/browser/**", allowEmptyArchive: false
         }
       }
     }
 
+
     stage('Docker Build (FE only)') {
       steps {
-        dir("${FRONT_DIR}") {
-          sh "docker build -t ${IMAGE_NAME}:${IMAGE_TAG} ."
-        }
+        sh 'docker build -t yourdockerhub/todolist-frontend:latest todolist-frontend'
       }
     }
+
   }
 }
