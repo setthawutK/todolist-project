@@ -31,7 +31,7 @@ pipeline {
         dir("${FRONT_DIR}") {
           sh '''
             docker run --rm -v "$PWD":/app -w /app node:22 bash -lc "
-              npm ci --legacy-peer-deps &&
+              npm install --legacy-peer-deps &&
               npm run build --prod
             "
           '''
