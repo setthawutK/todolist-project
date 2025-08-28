@@ -24,11 +24,10 @@ public class SessionAndLogin {
     private final Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
 
     @PostMapping("/login")
-    public String login(@RequestBody Register member) {
+    public ResponseEntity<?> login(@RequestBody Register member) {
         String SQLCheckMember = "SELECT COUNT(*) FROM Member WHERE username = ? AND password = ?";
         String username = member.getName();
         String password = member.getPassword();
-
 
         Integer count = jdbcTemplate.queryForObject(SQLCheckMember, Integer.class, username, password);
 
@@ -39,13 +38,14 @@ public class SessionAndLogin {
                     .signWith(JwtUtil.key)   // ใช้ key จาก JwtUtil
                     .compact();
 
-            return token.toString();
+            // ✅ return JSON { "accessToken": token }
+            Map<String, String> response = Map.of("accessToken", token);
+            return ResponseEntity.ok(response);
         }
 
-
-
-        throw new RuntimeException("Invalid login");
+        return ResponseEntity.status(401).body("Invalid login");
     }
+    
     @GetMapping("/loginFinished/showlist")
     public ResponseEntity<?> showList(HttpServletRequest request) {
         String authHeader = request.getHeader("Authorization");
