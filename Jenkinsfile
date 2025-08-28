@@ -51,8 +51,7 @@ pipeline {
         """
       }
     }
-  }
-
+    
     stage('Deploy to Kubernetes') {
       steps {
           withKubeConfig([credentialsId: 'k8s-config', serverUrl: 'https://13.213.7.137:6443']) {
@@ -63,7 +62,9 @@ pipeline {
               """
           }
       }
+    }
   }
+
 
 
   post {
