@@ -51,18 +51,20 @@ pipeline {
         """
       }
     }
-    
+
     stage('Deploy to Kubernetes') {
-      steps {
-          withKubeConfig([credentialsId: 'k8s-config', serverUrl: 'https://13.213.7.137:6443']) {
-              sh """
-                kubectl apply -f todolist-k8s/ -n todolist
-                kubectl rollout status deployment/todo-backend -n todolist
-                kubectl rollout status deployment/todo-frontend -n todolist
-              """
-          }
-      }
+        steps {
+            withCredentials([file(credentialsId: 'k8s-config', variable: 'KUBECONFIG_FILE')]) {
+                sh '''
+                  export KUBECONFIG=$KUBECONFIG_FILE
+                  kubectl apply -f todolist-k8s/ -n todolist
+                  kubectl rollout status deployment/todo-backend -n todolist
+                  kubectl rollout status deployment/todo-frontend -n todolist
+                '''
+            }
+        }
     }
+
   }
 
 
