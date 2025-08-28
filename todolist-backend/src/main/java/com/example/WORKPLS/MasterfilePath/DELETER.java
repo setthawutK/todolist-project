@@ -1,6 +1,9 @@
 package com.example.WORKPLS.MasterfilePath;
 
 import com.example.WORKPLS.Entity.DairyInfor;
+import com.example.WORKPLS.dto.ApiResponse;
+
+
 import io.jsonwebtoken.Jwts;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
@@ -47,11 +50,16 @@ public class DELETER {
         int rowsAffected = jdbcTemplate.update(SQL, orderID, username);
 
         if (rowsAffected > 0) {
-            return ResponseEntity.ok("Deleted successfully for user: " + username);
+            return ResponseEntity.ok(
+                new ApiResponse(true, "Deleted successfully", username, orderId, null)
+            );
         } else {
-            return ResponseEntity.status(404).body("No matching record found.");
+            return ResponseEntity.status(404).body(
+                new ApiResponse(false, "No matching record found", username, orderId, null)
+            );
         }
+
     }
-    }
+}
 
 
