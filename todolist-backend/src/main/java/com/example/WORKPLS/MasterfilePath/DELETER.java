@@ -22,13 +22,13 @@ public class DELETER {
 
 
     @DeleteMapping("/delete")
-    public ResponseEntity<String> deleteFile(HttpServletRequest request,
+    public ResponseEntity<ApiResponse> deleteFile(HttpServletRequest request,
                                              @RequestHeader("orderID") String orderID) {
         /* 1. ดึง Authorization header*/
         String authHeader = request.getHeader("Authorization");
 
         if (authHeader == null) {
-            return ResponseEntity.status(401).body("Missing or invalid Authorization header");
+            return ResponseEntity.status(401).body(new ApiResponse(false, "Missing or invalid Authorization header", null, null));
         }
 
         String jwt = authHeader;
@@ -42,7 +42,7 @@ public class DELETER {
                     .getBody()
                     .getSubject();
         } catch (Exception e) {
-            return ResponseEntity.status(401).body("Invalid or expired token");
+            return ResponseEntity.status(401).body(new ApiResponse(false, "Invalid or expired token", null, null));
         }
 
         // *3. ลบจาก DB ตาม orderID + username*/
@@ -52,7 +52,7 @@ public class DELETER {
         if (rowsAffected > 0) {
             return ResponseEntity.ok(new ApiResponse(true, "Deleted successfully", username, orderID));
         } else {
-            return ResponseEntity.status(404).body("No matching record found.");
+            return ResponseEntity.status(404).body(new ApiResponse(false, "No matching record found.", null, null));
         }
     }
  }
