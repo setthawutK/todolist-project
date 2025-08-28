@@ -5,7 +5,7 @@ pipeline {
 
   environment {
     REGISTRY = "docker.io"
-    FRONT = "docker.io/<your_dockerhub_username>/todo-frontend"
+    FRONT = "docker.io/kongsetthawut/todo-frontend"
     COMMIT = sh(returnStdout: true, script: 'git rev-parse --short HEAD').trim()
     TAG = "${COMMIT}"
   }
