@@ -1,7 +1,7 @@
 pipeline {
   agent any
   options { timestamps() }
-  triggers { githubPush() }
+  triggers { githubPush() }   // ให้ Webhook เรียกอัตโนมัติ
 
   environment {
     REGISTRY = "docker.io"
@@ -12,9 +12,7 @@ pipeline {
 
   stages {
     stage('Checkout') {
-      steps {
-        checkout scm
-      }
+      steps { checkout scm }
     }
 
     stage('Build Frontend Image') {
@@ -28,8 +26,9 @@ pipeline {
 
     stage('Push Frontend Image') {
       steps {
+        sh 'docker logout || true'
         withCredentials([usernamePassword(credentialsId: 'dockerhub-creds', usernameVariable: 'U', passwordVariable: 'P')]) {
-          sh "echo \$P | docker login -u \$U --password-stdin ${REGISTRY}"
+          sh 'echo $P | docker login -u $U --password-stdin ${REGISTRY}'
         }
         sh """
           docker push ${FRONT}:${TAG}
@@ -40,8 +39,7 @@ pipeline {
   }
 
   post {
-    success { echo "✅ Frontend build & push complete!" }
-    failure { echo "❌ Frontend build failed!" }
-    always { cleanWs() }
+    success { echo "✅ Pushed ${FRONT}:${TAG} และ :latest สำเร็จ" }
+    always  { cleanWs() }
   }
 }
