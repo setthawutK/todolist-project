@@ -33,19 +33,16 @@
           >Username</label
         >
         <input
-          [class.invalid]="registerForm.get('username')?.invalid && registerForm.get('username')?.touched"
+          [class.invalid]="registerForm.get('name')?.invalid && registerForm.get('name')?.touched"
           class="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
           id="username"
           type="text"
-          formControlName="username"
+          formControlName="name"
           placeholder="ชื่อผู้ใช้"
         />
-        <div
-          *ngIf="registerForm.get('username')?.invalid && registerForm.get('username')?.touched"
-          class="text-red-500 text-xs mt-1"
-        >
-          กรุณากรอกชื่อผู้ใช้
-        </div>
+        @if (isInvalidField('name')) {
+          <div class="text-red-500 text-xs mt-1">กรุณากรอกชื่อผู้ใช้</div>
+        }
       </div>
       <div class="mb-4">
         <label
@@ -61,33 +58,9 @@
           formControlName="password"
           placeholder="รหัสผ่าน"
         />
-        <div
-          *ngIf="registerForm.get('password')?.invalid && registerForm.get('password')?.touched"
-          class="text-red-500 text-xs mt-1"
-        >
-          กรุณากรอกรหัสผ่าน
-        </div>
-      </div>
-      <div class="mb-6">
-        <label
-          class="block text-sm font-medium text-gray-700"
-          for="confirmPassword"
-          >ยืนยันรหัสผ่าน</label
-        >
-        <input
-          [class.invalid]="registerForm.get('confirmPassword')?.invalid && registerForm.get('confirmPassword')?.touched"
-          class="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
-          id="confirmPassword"
-          type="password"
-          formControlName="confirmPassword"
-          placeholder="ยืนยันรหัสผ่าน"
-        />
-        <div
-          *ngIf="registerForm.get('confirmPassword')?.invalid && registerForm.get('confirmPassword')?.touched"
-          class="text-red-500 text-xs mt-1"
-        >
-          กรุณายืนยันรหัสผ่าน
-        </div>
+        @if (isInvalidField('password')) {
+          <div class="text-red-500 text-xs mt-1">กรุณากรอกรหัสผ่าน</div>
+        }
       </div>
       <button
         class="w-full bg-gradient-to-r from-blue-500 to-teal-400 text-white py-3 rounded-lg font-bold shadow-md hover:from-blue-600 hover:to-teal-500 transition mb-2"

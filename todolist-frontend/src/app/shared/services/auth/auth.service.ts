@@ -14,6 +14,10 @@ export class AuthService {
     return this._httpClient.post<any>(todoListAPI.authLogin, body);
   }
 
+  register(body: any): Observable<any> {
+    return this._httpClient.post<any>(todoListAPI.registerNaja, body);
+  }
+
   // logout(body: LogoutReq): Observable<SuccessResponseVoid> {
   //   return this._httpClient.post<SuccessResponseVoid>(ileaveAPI.apiV1AuthenticationsLogout, body);
   // }

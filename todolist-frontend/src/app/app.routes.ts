@@ -22,6 +22,11 @@ export const routes: Routes = [
     loadComponent: () => import('./modules/auth/pages/register/register.component').then(m => m.RegisterComponent),
   },
   {
+    path: 'home',
+    canActivate: [],
+    loadComponent: () => import('./modules/todo/pages/todo/todo.component').then(m => m.TodoComponent),
+  },
+  {
     path: '',
     canActivate: [],
     children: [

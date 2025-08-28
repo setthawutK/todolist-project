@@ -44,7 +44,7 @@ export class ServiceAuthInterceptor implements HttpInterceptor {
   private addToken(request: HttpRequest<any>, token: string): HttpRequest<any> {
     return request.clone({
       setHeaders: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `${token}`,
         'ngrok-skip-browser-warning': 'true',
       },
     });

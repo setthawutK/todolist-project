@@ -19,8 +19,9 @@ declare const enum ExampleAPI {
 
 declare const enum todoListAPI {
   authLogin = `${PATH}/auth/login`,
+  registerNaja = `${PATH}/RegisterNaja`,
   authLoginFinishedShowlist = `${PATH}auth/loginFinished/showlist`,
-  createlist = `${PATH}/createlist`,
+  createlist = `${PATH}/create-list`,
   delete = `${PATH}/delete`,
   updateUp = `${PATH}/updateUp`,
 }

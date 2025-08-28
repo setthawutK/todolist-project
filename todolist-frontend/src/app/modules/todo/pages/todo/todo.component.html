@@ -1,0 +1,82 @@
+<!-- พื้นหลังไล่เฉด-->
+<div class="min-h-screen bg-gradient-to-br from-sky-50 via-cyan-50 to-cyan-100 flex items-center justify-center px-4 py-10">
+  <div class="w-full max-w-6xl">
+    <div class="bg-white rounded-2xl shadow-xl ring-1 ring-black/5 overflow-horderIDden">
+      <div class="p-6 border-b border-slate-100">
+        <h1 class="text-2xl md:text-3xl font-extrabold text-sky-700 text-center">To Do List</h1>
+
+        <!-- Add Task -->
+        <form
+          (ngSubmit)="add()"
+          class="mt-4 flex justify-center"
+        >
+          <div class="flex w-full max-w-xl">
+            <input
+              [(ngModel)]="draft"
+              class="flex-1 px-4 py-2.5 rounded-l-full border border-sky-300 focus:outline-none focus:ring-2 focus:ring-sky-400"
+              name="draft"
+              placeholder="Add a new task..."
+              autocomplete="off"
+            />
+            <button
+              [disabled]="!draft"
+              class="px-5 py-2.5 rounded-r-full bg-gradient-to-r from-sky-600 to-teal-500 text-white font-semibold border border-sky-600 disabled:opacity-60"
+              type="submit"
+            >
+              Add
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- รายการงาน -->
+      <div class="p-6">
+        <h2 class="text-sky-700 font-semibold mb-3">Task List</h2>
+
+        @if (todos) {
+          <ul class="space-y-2">
+            @for (t of todos; track t.order_id; let i = $index) {
+              <li
+                class="flex items-center justify-between gap-3 rounded-xl border border-slate-200 bg-slate-50 px-4 py-2.5 hover:bg-white hover:shadow-sm transition"
+              >
+                <label class="flex items-center gap-3 flex-1">
+                  <input
+                    (change)="toggleCheck(t)"
+                    [checked]="t.boolean_check"
+                    class="h-4 w-4 accent-sky-600"
+                    type="checkbox"
+                  />
+
+                  <span
+                    [ngClass]="t.done ? 'line-through text-slate-400' : 'text-slate-700'"
+                    class="text-base"
+                  >
+                    {{ t.dairy_info }}
+                  </span>
+                </label>
+
+                <!-- ปุ่ม -->
+                <div class="flex items-center gap-2">
+                  <button
+                    (click)="delete(t.order_id)"
+                    class="text-rose-600 font-semibold hover:underline"
+                  >
+                    Delete
+                  </button>
+                </div>
+              </li>
+            }
+          </ul>
+        } @else {
+          <p class="text-center text-slate-500">No tasks yet — add one above!</p>
+        }
+
+        <!-- สรุป -->
+        <div class="mt-4 flex items-center justify-center gap-3 text-sm">
+          <span class="px-3 py-1 rounded-full bg-sky-50 text-sky-700 ring-1 ring-sky-200"> Completed: {{ completed }} </span>
+          <span class="px-3 py-1 rounded-full bg-teal-50 text-teal-700 ring-1 ring-teal-200"> Uncompleted: {{ uncompleted }} </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

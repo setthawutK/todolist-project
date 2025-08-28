@@ -69,11 +69,11 @@ export class AuthSessionService {
     this._router.navigate(redirectUrl);
   }
 
-  // public setSession(session: LoginResDto) {
-  //   const json = JSON.stringify(session);
-  //   localStorage.setItem(StorageKey.authSession, json);
-  //   this.notifySessionChange();
-  // }
+  public setSession(session: any) {
+    const json = JSON.stringify(session);
+    localStorage.setItem(StorageKey.authSession, json);
+    this.notifySessionChange();
+  }
 
   // public refreshAccessToken(): Observable<SuccessResponseLoginResDto> {
   //   const body = {
