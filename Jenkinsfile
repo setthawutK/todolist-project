@@ -53,6 +53,19 @@ pipeline {
     }
   }
 
+    stage('Deploy to Kubernetes') {
+      steps {
+          withKubeConfig([credentialsId: 'k8s-config', serverUrl: 'https://13.213.7.137:6443']) {
+              sh """
+                kubectl apply -f todolist-k8s/ -n todolist
+                kubectl rollout status deployment/todo-backend -n todolist
+                kubectl rollout status deployment/todo-frontend -n todolist
+              """
+          }
+      }
+  }
+
+
   post {
     success { echo "✅ Pushed ${FRONT}:${TAG} และ :latest สำเร็จ" }
     always  { cleanWs() }
