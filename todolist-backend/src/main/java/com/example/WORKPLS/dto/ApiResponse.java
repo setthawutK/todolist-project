@@ -4,27 +4,27 @@ public class ApiResponse {
     private boolean success;
     private String message;
     private String username;
-    private String orderId; // ✅ เพิ่ม field นี้
+    private String orderId;
+    private Object data;   // ✅ ฟิลด์เสริม
 
-    // ✅ constructor มี args (4 arguments)
-    public ApiResponse(boolean success, String message, String username, String orderId) {
+    // ✅ constructor full args
+    public ApiResponse(boolean success, String message, String username, String orderId, Object data) {
         this.success = success;
         this.message = message;
         this.username = username;
         this.orderId = orderId;
+        this.data = data;
     }
 
-    // ✅ constructor มี args (3 arguments) เผื่อ Register ใช้
+    // ✅ constructor partial args (เผื่อใช้กับ Register ที่ไม่ต้องมี orderId)
     public ApiResponse(boolean success, String message, String username) {
-        this.success = success;
-        this.message = message;
-        this.username = username;
+        this(success, message, username, null, null);
     }
 
-    // ✅ constructor เปล่า
+    // ✅ constructor no args
     public ApiResponse() {}
 
-    // ✅ getters & setters
+    // getters & setters
     public boolean isSuccess() { return success; }
     public void setSuccess(boolean success) { this.success = success; }
 
@@ -36,4 +36,7 @@ public class ApiResponse {
 
     public String getOrderId() { return orderId; }
     public void setOrderId(String orderId) { this.orderId = orderId; }
+
+    public Object getData() { return data; }
+    public void setData(Object data) { this.data = data; }
 }
