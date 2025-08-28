@@ -1,4 +1,4 @@
-# --- Build stage ---
+# Build Angular
 FROM node:22 AS builder
 WORKDIR /usr/src/app
 COPY package*.json ./
@@ -6,11 +6,11 @@ RUN npm install --legacy-peer-deps
 COPY . .
 RUN npm run build --prod
 
-# --- Runtime stage (no Nginx) ---
-FROM node:22-alpine
-WORKDIR /srv
-RUN npm i -g http-server
-# ✅ ใช้ path ที่มี browser ตามที่ยืนยัน
-COPY --from=builder /usr/src/app/dist/todo-list-webapp/browser /srv/dist
-EXPOSE 8080
-CMD ["http-server", "/srv/dist", "-p", "8080", "-a", "0.0.0.0"]
+# Serve Angular with Node.js
+# ใช้ package serve (npm i -g serve)
+FROM node:22
+WORKDIR /usr/src/app
+RUN npm install -g serve
+COPY --from=builder /usr/src/app/dist/todo-list-webapp/browser ./dist
+EXPOSE 3000
+CMD ["serve", "-s", "dist", "-l", "3000"]

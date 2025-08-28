@@ -1,52 +1,47 @@
 pipeline {
   agent any
-  options { timestamps(); skipDefaultCheckout(true) }
-  triggers { pollSCM('H/2 * * * *') }
+  options { timestamps() }
+  triggers { githubPush() }
 
   environment {
-    REPO_URL   = 'https://github.com/setthawutK/todolist-project.git'
-    BRANCH     = 'main'
-    FRONT_DIR  = 'todolist-frontend'                 // ✅ package.json อยู่ตรงนี้
-    DIST_PATH  = 'dist/todo-list-webapp/browser'     // ✅ ของคุณมี browser
-    IMAGE_NAME = 'yourdockerhub/todolist-frontend'
-    IMAGE_TAG  = 'latest'
+    REGISTRY = "docker.io"
+    FRONT = "docker.io/<your_dockerhub_username>/todo-frontend"
+    COMMIT = sh(returnStdout: true, script: 'git rev-parse --short HEAD').trim()
+    TAG = "${COMMIT}"
   }
 
   stages {
-    stage('Checkout (fresh clone)') {
+    stage('Checkout') {
       steps {
-        deleteDir()
-        git url: "${REPO_URL}", branch: "${BRANCH}"
-        sh 'ls -la'
+        checkout scm
       }
     }
 
-    stage('Build Angular') {
+    stage('Build Frontend Image') {
       steps {
-        // พาธงานของคุณคือ /var/jenkins_home/workspace/<job-name>/todolist-frontend
-        sh '''
-          docker run --rm \
-            -v jenkins_home:/var/jenkins_home \
-            -w /var/jenkins_home/workspace/todolist-ci-cd/todolist-frontend \
-            node:22 bash -lc "
-              npm install --legacy-peer-deps &&
-              node --max_old_space_size=4096 ./node_modules/@angular/cli/bin/ng build --configuration production
-            "
-        '''
+        sh """
+          docker build -t ${FRONT}:${TAG} -f todolist-frontend/Dockerfile .
+          docker tag ${FRONT}:${TAG} ${FRONT}:latest
+        """
       }
-      post {
-        success {
-          archiveArtifacts artifacts: "todolist-frontend/dist/todo-list-webapp/browser/**", allowEmptyArchive: false
+    }
+
+    stage('Push Frontend Image') {
+      steps {
+        withCredentials([usernamePassword(credentialsId: 'dockerhub-creds', usernameVariable: 'U', passwordVariable: 'P')]) {
+          sh "echo \$P | docker login -u \$U --password-stdin ${REGISTRY}"
         }
+        sh """
+          docker push ${FRONT}:${TAG}
+          docker push ${FRONT}:latest
+        """
       }
     }
+  }
 
-
-    stage('Docker Build (FE only)') {
-      steps {
-        sh 'docker build -t yourdockerhub/todolist-frontend:latest todolist-frontend'
-      }
-    }
-
+  post {
+    success { echo "✅ Frontend build & push complete!" }
+    failure { echo "❌ Frontend build failed!" }
+    always { cleanWs() }
   }
 }
