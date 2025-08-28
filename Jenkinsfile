@@ -20,7 +20,7 @@ pipeline {
     stage('Build Frontend Image') {
       steps {
         sh """
-          docker build -t ${FRONT}:${TAG} -f todolist-frontend/Dockerfile .
+          docker build -t ${FRONT}:${TAG} -f todolist-frontend/Dockerfile todolist-frontend
           docker tag ${FRONT}:${TAG} ${FRONT}:latest
         """
       }
