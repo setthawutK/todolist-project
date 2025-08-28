@@ -28,10 +28,8 @@ pipeline {
     stage('Build Backend Image') {
       steps {
         sh """
-          docker build -t docker.io/<your_dockerhub>/todo-backend:${TAG} \
-            -f todolist-backend/Dockerfile todolist-backend
-          docker tag docker.io/<your_dockerhub>/todo-backend:${TAG} \
-                    docker.io/<your_dockerhub>/todo-backend:latest
+          docker build -t ${BACK}:${TAG} -f todolist-backend/Dockerfile todolist-backend
+          docker tag ${BACK}:${TAG} ${BACK}:latest
         """
       }
     }
