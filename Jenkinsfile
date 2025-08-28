@@ -53,17 +53,20 @@ pipeline {
     }
 
     stage('Deploy to Kubernetes') {
-        steps {
-            withCredentials([file(credentialsId: 'k8s-config', variable: 'KUBECONFIG_FILE')]) {
-                sh '''
-                  export KUBECONFIG=$KUBECONFIG_FILE
-                  kubectl apply -f todolist-k8s/ -n todolist
-                  kubectl rollout status deployment/todo-backend -n todolist
-                  kubectl rollout status deployment/todo-frontend -n todolist
-                '''
-            }
-        }
-    }
+      steps {
+          withCredentials([file(credentialsId: 'k8s-config', variable: 'KUBECONFIG_FILE')]) {
+              sh '''
+                export KUBECONFIG=$KUBECONFIG_FILE
+                kubectl apply -f todolist-k8s/storageclass-ebs.yaml
+                kubectl apply -f todolist-k8s/postgres-pvc.yaml -n todolist
+                kubectl apply -f todolist-k8s/todolist-app.yaml -n todolist
+                kubectl rollout status deployment/todo-backend -n todolist
+                kubectl rollout status deployment/todo-frontend -n todolist
+              '''
+          }
+      }
+  }
+
 
   }
 
