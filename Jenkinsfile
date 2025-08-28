@@ -6,6 +6,7 @@ pipeline {
   environment {
     REGISTRY = "docker.io"
     FRONT = "docker.io/kongsetthawut/todo-frontend"
+    BACK = "docker.io/kongsetthawut/todo-backend"
     COMMIT = sh(returnStdout: true, script: 'git rev-parse --short HEAD').trim()
     TAG = "${COMMIT}"
   }
@@ -24,6 +25,17 @@ pipeline {
       }
     }
 
+    stage('Build Backend Image') {
+      steps {
+        sh """
+          docker build -t docker.io/<your_dockerhub>/todo-backend:${TAG} \
+            -f todolist-backend/Dockerfile todolist-backend
+          docker tag docker.io/<your_dockerhub>/todo-backend:${TAG} \
+                    docker.io/<your_dockerhub>/todo-backend:latest
+        """
+      }
+    }
+
     stage('Push Frontend Image') {
       steps {
         sh 'docker logout || true'
@@ -33,6 +45,11 @@ pipeline {
         sh """
           docker push ${FRONT}:${TAG}
           docker push ${FRONT}:latest
+        """
+        
+        sh """
+          docker push ${BACK}:${TAG}
+          docker push ${BACK}:latest
         """
       }
     }
