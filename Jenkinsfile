@@ -57,6 +57,9 @@ pipeline {
           withCredentials([file(credentialsId: 'k8s-config', variable: 'KUBECONFIG_FILE')]) {
               sh '''
                 export KUBECONFIG=$KUBECONFIG_FILE
+                kubectl delete deployment postgres -n todolist --ignore-not-found=true
+                kubectl delete pod -l app=postgres -n todolist --ignore-not-found=true
+                
                 kubectl delete pvc postgres-pvc -n todolist --ignore-not-found=true
                 kubectl delete pv postgres-pv --ignore-not-found=true
 
