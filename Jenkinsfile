@@ -52,8 +52,7 @@ pipeline {
       }
     }
 
-    stages {
-        stage('Deploy to Kubernetes') {
+    stage('Deploy to Kubernetes') {
             steps {
                 withEnv(["KUBECONFIG=$KUBECONFIG_FILE"]) {
                     sh """
@@ -71,7 +70,6 @@ pipeline {
                     """
                 }
             }
-        }
     }
 
 
