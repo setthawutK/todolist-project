@@ -22,10 +22,11 @@
 --DROP TABLE IF EXISTS Member CASCADE;
 
 -- Table: Member
-CREATE TABLE IF NOT EXISTS member (
-  username VARCHAR(255) PRIMARY KEY,
-  password VARCHAR(255) NOT NULL
+CREATE TABLE Member (
+    username VARCHAR(255) PRIMARY KEY,
+    password VARCHAR(255)
 );
+
 
 
 -- Table: InfoList
