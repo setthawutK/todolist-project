@@ -9,6 +9,6 @@ RUN npx ng build --configuration production --base-href /
 # Stage 2: Serve with Nginx
 FROM nginx:stable-alpine
 COPY --from=builder /usr/src/app/dist/todo-list-webapp/browser /usr/share/nginx/html
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+COPY nginx.conf /etc/nginx/nginx.conf
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
