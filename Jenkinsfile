@@ -60,11 +60,11 @@ pipeline {
                 kubectl get ns "todolist" >/dev/null 2>&1 || kubectl apply -f todolist-k8s/namespace.yaml
                 kubectl apply -f todolist-k8s/storageclass-ebs.yaml
                 kubectl apply -f todolist-k8s/postgres-pvc.yaml -n todolist
+                kubectl apply -f todolist-k8s/todo-backend-hpa.yaml -n todolist
 
                 kubectl apply -f todolist-k8s/todolist-app.yaml
      
         
-                kubectl apply -f todolist-k8s/todo-backend-hpa.yaml -n todolist
 
                 kubectl rollout status deployment/todo-backend -n todolist
                 kubectl rollout status deployment/todo-frontend -n todolist
