@@ -1,6 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment.prod';
+const BASE = environment.apiBase;
 
 @Injectable({
   providedIn: 'root',
@@ -11,11 +13,11 @@ export class AuthService {
   constructor() {}
 
   login(body: any): Observable<any> {
-    return this._httpClient.post<any>(todoListAPI.authLogin, body);
+    return this._httpClient.post<any>(`${BASE}/auth/login`, body);
   }
 
   register(body: any): Observable<any> {
-    return this._httpClient.post<any>(todoListAPI.registerNaja, body);
+    return this._httpClient.post<any>(`${BASE}/RegisterNaja`, body);
   }
 
   // logout(body: LogoutReq): Observable<SuccessResponseVoid> {
