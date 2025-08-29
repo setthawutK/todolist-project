@@ -35,12 +35,13 @@ metadata:
   name: todo-backend-svc
   namespace: todolist
 spec:
-  type: ClusterIP
+  type: NodePort
   selector:
     app: todo-backend
   ports:
     - port: 8080
       targetPort: 8080
+      nodePort: 30082
 
 ---
 # =========================
