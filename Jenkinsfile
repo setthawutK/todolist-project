@@ -57,6 +57,7 @@ pipeline {
           withCredentials([file(credentialsId: 'k8s-config', variable: 'KUBECONFIG_FILE')]) {
               sh '''
                 export KUBECONFIG=$KUBECONFIG_FILE
+                kubectl get ns "todolist" >/dev/null 2>&1 || kubectl apply -f namespace.yaml
                 kubectl apply -f todolist-k8s/storageclass-ebs.yaml
                 kubectl apply -f todolist-k8s/postgres-pvc.yaml -n todolist
 
