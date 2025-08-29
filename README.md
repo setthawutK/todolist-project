@@ -31,6 +31,8 @@
    - `kubectl apply -f todolist-app.yaml`
    - `kubectl apply -f todo-backend-hpa.yaml`
 
+![Pipeline](docs/jenkins-stage-cicd.png)
+
 ---
 
 ## 🛠️ Kubernetes Manifests
@@ -45,15 +47,13 @@
 
 ## 📊 K8s Testing (Auto Scaling)
 
+![hpa](docs/hpa.png)
+
 ### 1. Run Load Test
 
 ```bash
 k6 run tests/k8s-loadtest.js
 
 
-## 📌 Jenkins Pipeline
-![Pipeline](docs/pipeline.png)
 
-## 📌 HPA Scaling
-![HPA](docs/hpa.png)
 ```
