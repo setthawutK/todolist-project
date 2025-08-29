@@ -74,13 +74,12 @@ metadata:
   name: todo-frontend-svc
   namespace: todolist
 spec:
-  type: NodePort
+  type: LoadBalancer
   selector:
     app: todo-frontend
   ports:
     - port: 80
       targetPort: 80
-      nodePort: 30081
 
 ---
 # =========================
