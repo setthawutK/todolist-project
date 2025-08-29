@@ -1,4 +1,3 @@
-declare const PATH = '/todo-list-service';
 declare const examplePATH = '/example-service';
 
 declare const enum ExampleAPI {
@@ -17,11 +16,15 @@ declare const enum ExampleAPI {
   // customerApiV1PoliciesClaims$1Cancel = `${PATH}/customer/api/v1/policies/claims/$1/cancel`,
 }
 
-declare const enum todoListAPI {
-  authLogin = `${PATH}/auth/login`,
-  registerNaja = `${PATH}/RegisterNaja`,
-  authLoginFinishedShowlist = `${PATH}auth/loginFinished/showlist`,
-  createlist = `${PATH}/create-list`,
-  delete = `${PATH}/delete`,
-  updateUp = `${PATH}/updateUp`,
-}
+import { environment } from '../environments/environment';
+
+const BASE = environment.apiBase; // '/todo-list-service'
+
+export const todoListAPI = {
+  authLogin: `${BASE}/auth/login`,
+  registerNaja: `${BASE}/RegisterNaja`,
+  authLoginFinishedShowlist: `${BASE}/auth/loginFinished/showlist`,
+  createlist: `${BASE}/create-list`,
+  delete: `${BASE}/delete`,
+  updateUp: `${BASE}/updateUp`,
+} as const;
