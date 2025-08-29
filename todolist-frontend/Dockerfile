@@ -7,7 +7,6 @@ COPY . .
 RUN npm run build --prod
 
 # Serve Angular with Node.js
-# ใช้ package serve (npm i -g serve)
 FROM node:22
 WORKDIR /usr/src/app
 RUN npm install -g serve
