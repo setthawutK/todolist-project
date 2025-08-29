@@ -6,7 +6,8 @@ COPY package*.json ./
 RUN npm install --legacy-peer-deps
 
 COPY . .
-RUN npx ng build --prod --base-href /
+RUN npx ng build --configuration production --base-href /
+
 
 # Stage 2: Serve with Nginx
 FROM nginx:stable-alpine
