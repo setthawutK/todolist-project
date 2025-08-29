@@ -73,6 +73,8 @@ kind: Service
 metadata:
   name: todo-frontend-svc
   namespace: todolist
+  annotations:
+    service.beta.kubernetes.io/aws-load-balancer-type: "nlb"
 spec:
   type: LoadBalancer
   selector:
