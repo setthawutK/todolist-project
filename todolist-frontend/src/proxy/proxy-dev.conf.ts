@@ -1,4 +1,4 @@
-const todoListService = 'http://13.213.7.137:30081';
+const todoListService = 'http://localhost:30080';
 
 const PROXY_CONFIG = {
   '/todo-list-service': {
