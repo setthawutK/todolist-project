@@ -63,6 +63,8 @@ pipeline {
 
                 kubectl apply -f todolist-k8s/todolist-app.yaml
      
+        
+                kubectl apply -f todolist-k8s/todo-backend-hpa.yaml -n todolist
 
                 kubectl rollout status deployment/todo-backend -n todolist
                 kubectl rollout status deployment/todo-frontend -n todolist
