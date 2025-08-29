@@ -61,7 +61,8 @@ pipeline {
                 kubectl apply -f todolist-k8s/storageclass-ebs.yaml
                 kubectl apply -f todolist-k8s/postgres-pvc.yaml -n todolist
 
-                kubectl apply -f todolist-k8s/ -n todolist
+                kubectl apply -f todolist-k8s/todolist-app.yaml
+     
 
                 kubectl rollout status deployment/todo-backend -n todolist
                 kubectl rollout status deployment/todo-frontend -n todolist
