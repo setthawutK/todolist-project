@@ -1,5 +1,9 @@
 # 📝 TodoList Project Deployment (CI/CD + Kubernetes + Auto Scaling)
 
+## 📌 webapp เพิ่ม ลด รายการลิสต์ที่ต้องทำ
+
+![Todo](docs/todo.png)
+
 ## 📌 Architecture
 
 ![Architecture Diagram](docs/architecture.png)
