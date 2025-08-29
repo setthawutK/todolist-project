@@ -1,8 +1,13 @@
+const todoListService = 'http://localhost:30080';
+
 const PROXY_CONFIG = {
   '/todo-list-service': {
-    target: 'http://localhost:30080',
-    secure: false,
+    target: todoListService,
     changeOrigin: true,
+    secure: false,
+    pathRewrite: {
+      '^/todo-list-service': '',
+    },
   },
 };
 
